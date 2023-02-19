@@ -7,6 +7,24 @@
       "slug": "dashboard-analytics"
     },
     {
+      "url": "/users",
+      "name": "Users",
+      "icon": "menu-icon tf-icons bx bx-user-circle",
+      "slug": "user-all",
+      "submenu": [
+        {
+          "url": "/users/all",
+          "name": "All Users",
+          "slug": "users-all"
+        },
+        {
+          "url": "/users/add",
+          "name": "Add User",
+          "slug": "users-add"
+        }
+      ]
+    },
+    {
       "name": "Layouts",
       "icon": "menu-icon tf-icons bx bx-layout",
       "slug": "layouts",

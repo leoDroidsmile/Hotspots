@@ -78,3 +78,15 @@ Route::get('/form/layouts-horizontal', $controller_path . '\form_layouts\Horizon
 
 // tables
 Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tables-basic');
+
+
+
+
+// =====================    User Management         ============================= //
+
+Route::get('/users/all', $controller_path . '\users\Users@index')->name('users-all');
+Route::get('/users/add', $controller_path . '\users\Users@create')->name('users-create');
+Route::post('/users/store', $controller_path . '\users\Users@store')->name('users-store');
+Route::get('/users/edit', $controller_path . '\users\Users@edit')->name('users-edit');
+Route::post('/users/update', $controller_path . '\users\Users@update')->name('users-update');
+Route::post('/users/delete', $controller_path . '\users\Users@delete')->name('users-delete');
