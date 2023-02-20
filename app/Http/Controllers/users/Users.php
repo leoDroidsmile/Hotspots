@@ -7,14 +7,32 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
 use Session;
+use Auth;
 
 class Users extends Controller
 {
+  public function __construct()
+  {
+      $this->middleware('auth');
+  }
+
   public function index()
   {
-    $you = auth()->user();
-    $users = User::all();
-    return view('content.users.users-all', compact('users', 'you'));
+    $users = User::all()->except(Auth::id());
+    return view('content.users.users-all', compact('users'));
+  }
+
+  public function showLogin(){
+    return view('content.users.users-login');
+  }
+
+  public function login(Request $request){
+    $postData = $request->post();
+    $email = $postData["email"];
+
+    $user = User::where('email','=',$email)->first();
+    Auth::loginUsingId($user->id, TRUE);
+    return redirect('/users/all');
   }
 
   public function create()
@@ -25,19 +43,20 @@ class Users extends Controller
   public function store(Request $request)
   {
     $this->validate($request, array(
-      'name'      =>  'required|max:255',
-      'email'     =>  'required|email|max:255',
-      'password'  =>  'required|min:5|max:2000'
-    ));
+      'name' => 'required|max:255',
+      'email' => 'required|email|max:255',
+      'password' => 'required|min:5|max:2000'
+    )
+    );
 
     $postData = $request->post();
 
     $user = new User;
-    $user->name                   = $postData["name"];
-    $user->email                  = $postData["email"];
-    $user->email_verified_at      = date('Y-m-d H:i:s');
-    $user->password               = Hash::make($postData["password"]);
-    $user->is_admin               = false;
+    $user->name = $postData["name"];
+    $user->email = $postData["email"];
+    $user->email_verified_at = date('Y-m-d H:i:s');
+    $user->password = Hash::make($postData["password"]);
+    $user->is_admin = false;
     $user->save();
 
     Session::flash('success', 'User was added successfully!');
@@ -55,17 +74,18 @@ class Users extends Controller
   public function update(Request $request)
   {
     $this->validate($request, array(
-      'name'      =>  'required|max:255',
-      'email'     =>  'required|email|max:255',
-      'password'  =>  'required|min:5|max:2000'
-    ));
+      'name' => 'required|max:255',
+      'email' => 'required|email|max:255',
+      'password' => 'required|min:5|max:2000'
+    )
+    );
 
     $postData = $request->post();
 
     $user = User::find($request->id);
-    $user->name                   = $postData["name"];
-    $user->email                  = $postData["email"];
-    $user->password               = Hash::make($postData["password"]);
+    $user->name = $postData["name"];
+    $user->email = $postData["email"];
+    $user->password = Hash::make($postData["password"]);
 
     $user->save();
 
@@ -77,8 +97,9 @@ class Users extends Controller
   public function delete(Request $request)
   {
     $this->validate($request, array(
-      'id'        =>  'required'
-    ));
+      'id' => 'required'
+    )
+    );
 
     $user = User::find($request->id);
     $user->delete();

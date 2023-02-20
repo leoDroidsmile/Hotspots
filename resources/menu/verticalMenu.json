@@ -25,6 +25,23 @@
       ]
     },
     {
+      "name": "Hotspots",
+      "icon": "menu-icon tf-icons bx bx-sitemap",
+      "slug": "hotspots-all",
+      "submenu": [
+        {
+          "url": "/hotspots/all",
+          "name": "All Hotspots",
+          "slug": "hotspots`-all"
+        },
+        {
+          "url": "/hotspots/add",
+          "name": "Add Hotspot",
+          "slug": "hotspots-add"
+        }
+      ]
+    },
+    {
       "name": "Layouts",
       "icon": "menu-icon tf-icons bx bx-layout",
       "slug": "layouts",

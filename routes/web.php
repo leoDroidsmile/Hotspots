@@ -82,7 +82,12 @@ Route::get('/tables/basic', $controller_path . '\tables\Basic@index')->name('tab
 
 
 
+// Auth::routes();
+
+Route::get('/login', $controller_path . '\users\Users@showLogin')->name('login');
+Route::post('/login', $controller_path . '\users\Users@login');
 // =====================    User Management         ============================= //
+
 
 Route::get('/users/all', $controller_path . '\users\Users@index')->name('users-all');
 Route::get('/users/add', $controller_path . '\users\Users@create')->name('users-create');
@@ -90,3 +95,14 @@ Route::post('/users/store', $controller_path . '\users\Users@store')->name('user
 Route::get('/users/edit', $controller_path . '\users\Users@edit')->name('users-edit');
 Route::post('/users/update', $controller_path . '\users\Users@update')->name('users-update');
 Route::post('/users/delete', $controller_path . '\users\Users@delete')->name('users-delete');
+
+
+// =====================    Hotspots Management         ============================= //
+
+Route::get('/hotspots/all', $controller_path . '\hotspots\Hotspots@index')->name('hotspots-all');
+Route::get('/hotspots/add', $controller_path . '\hotspots\Hotspots@create')->name('hotspots-create');
+Route::post('/hotspots/store', $controller_path . '\hotspots\Hotspots@store')->name('hotspots-store');
+Route::get('/hotspots/edit', $controller_path . '\hotspots\Hotspots@edit')->name('hotspots-edit');
+Route::post('/hotspots/update', $controller_path . '\hotspots\Hotspots@update')->name('hotspots-update');
+Route::post('/hotspots/delete', $controller_path . '\hotspots\Hotspots@delete')->name('hotspots-delete');
+
