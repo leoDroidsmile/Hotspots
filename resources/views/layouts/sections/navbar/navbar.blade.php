@@ -46,15 +46,15 @@ $navbarDetached = ($navbarDetached ?? '');
         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
           <!-- Place this tag where you want the button to render. -->
-          <li class="nav-item lh-1 me-3">
+          {{-- <li class="nav-item lh-1 me-3">
             <a class="github-button" href="https://github.com/themeselection/sneat-html-laravel-admin-template-free" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star themeselection/sneat-html-laravel-admin-template-free on GitHub">Star</a>
-          </li>
+          </li> --}}
 
           <!-- User -->
           <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <div class="avatar avatar-online">
-                <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                <span class="avatar-initial rounded bg-label-info" style="border-radius:7rem !important;"><i class="bx bx-user bx-sm"></i></span>
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -63,12 +63,18 @@ $navbarDetached = ($navbarDetached ?? '');
                   <div class="d-flex">
                     <div class="flex-shrink-0 me-3">
                       <div class="avatar avatar-online">
-                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle">
+                        <span class="avatar-initial rounded bg-label-info" style="border-radius:7rem !important;"><i class="bx bx-user bx-sm"></i></span>
                       </div>
                     </div>
                     <div class="flex-grow-1">
-                      <span class="fw-semibold d-block">John Doe</span>
-                      <small class="text-muted">Admin</small>
+                      <span class="fw-semibold d-block">{{ Auth::user()->name}}</span>
+                      <small class="text-muted">
+                        @if( Auth::user()->is_admin)
+                          Adminstrator
+                        @else
+                          Hotspot User
+                        @endif
+                      </small>
                     </div>
                   </div>
                 </a>
