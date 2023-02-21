@@ -200,7 +200,7 @@
   <div class="col-12 order-2 order-md-3 order-lg-2 mb-4">
     <div class="card">
       <div class="row row-bordered g-0">
-        <h5 class="card-header m-0 me-2 pb-3">Hotspts Status</h5>
+        <h5 class="card-header m-0 me-2 pb-3">Hotspots Status</h5>
         <div class="card-body">
           <div class="table-responsive text-nowrap">
             <table class="table" id="hotspot_status_table">
