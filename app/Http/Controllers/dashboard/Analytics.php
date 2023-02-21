@@ -13,7 +13,10 @@ class Analytics extends Controller
 {
   public function index()
   {
-    $hotspots = Hotspot::where("owner_id", '=', Auth::user()->id)->get();
+    if(Auth::user()->is_admin == 0)
+      $hotspots = Hotspot::where("owner_id", '=', Auth::user()->id)->get();
+    else
+      $hotspots = Hotspot::all();
 
     $hotspots_online = 0;
 
@@ -64,7 +67,11 @@ class Analytics extends Controller
       }
     }
     
-    $hotspots_online = number_format($hotspots_online / count($hotspots) * 100, 2, '.', '');
+    if(count($hotspots) != 0)
+      $hotspots_online = number_format($hotspots_online / count($hotspots) * 100, 2, '.', '');
+    else
+      $hotspots_online = number_format(0, 2, '.', '');
+
     return view('content.dashboard.dashboards-analytics', compact('hotspots', 'monthlyEarning', 'hotspots_online'));
   }
 }
