@@ -80,11 +80,16 @@ class Analytics extends Controller
 
         // date("Y-m-d\TH:i:s\Z", strtotime($hotspot["created_at"]))
         
-        $monthlyEarning[$month] += json_decode($client->request('GET', $url, [
+        $earning = json_decode($client->request('GET', $url, [
           'headers' => [
               'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
           ]
         ])->getBody()->getContents())->data->total;
+
+        if(Auth::user()->is_admin)
+          $monthlyEarning[$month] += $earning;
+        else 
+          $monthlyEarning[$month] += $earning * $hotspot->percentage / 100;
       }
     }
     
@@ -95,7 +100,7 @@ class Analytics extends Controller
         $monthly_earning = new MonthlyEarning();
         $monthly_earning->user_id = Auth::user()->id;
         $monthly_earning->during = $year . '-' . $month;
-        $monthly_earning->amount = $monthlyEarning[$month];
+        $monthly_earning->amount = $monthlyEarning[$month];   
         $monthly_earning->created_at = date("Y-m-d H:i:s");
         $monthly_earning->save();
       }else if($monthlyEarningDB[$month] && $monthlyEarning[$month] != 0 && $monthlyEarningDB[$month]->amount != $monthlyEarning[$month]){
