@@ -26,13 +26,13 @@
     },
     {
       "name": "Hotspots",
-      "icon": "menu-icon tf-icons bx bx-sitemap",
+      "icon": "menu-icon tf-icons bx bx-server",
       "slug": "hotspots-all",
       "submenu": [
         {
           "url": "/hotspots/all",
           "name": "All Hotspots",
-          "slug": "hotspots`-all"
+          "slug": "hotspots-all"
         },
         {
           "url": "/hotspots/add",
