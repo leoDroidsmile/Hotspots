@@ -47,7 +47,7 @@ class Analytics extends Controller
 
     foreach($hotspots as $key => $hotspot){
 
-      $min_time = date("Y-01-01");
+      $min_time = date('Y-m-d', strtotime('-30 days'));
 
       if($this->refreshAble($hotspot->updated_at)){
 
