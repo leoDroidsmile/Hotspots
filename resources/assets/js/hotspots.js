@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     .then(Result => Result.json())
                     .then(response => {
                         console.log(response);
+                        document.getElementById('hotspot-name').value = response.data.name;
                         document.getElementById('hotspot-city').value = response.data.geocode.long_city;
                         document.getElementById('hotspot-state').value = response.data.geocode.long_state;
                         document.getElementById('hotspot-country').value = response.data.geocode.long_country;

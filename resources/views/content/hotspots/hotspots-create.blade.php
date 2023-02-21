@@ -28,13 +28,6 @@
                     <form id="createhotspot" class="mb-3" action="{{ url('/hotspots/store') }}" method="POST">
                         @csrf
                         <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name">Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="basic-default-name" name="name"
-                                    placeholder="Name" required/>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="hotspot-address">Address</label>
                             <div class="col-sm-10">
                                 <input type="text" class="form-control" id="hotspot-address" name="address"
@@ -48,6 +41,15 @@
                                 <button type="button" class="btn btn-primary" id="fill_auto_address">Fill automatically</button>
                             </div>
                         </div>
+                        
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="hotspot-name">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="hotspot-name" name="name"
+                                    placeholder="Name" readonly required/>
+                            </div>
+                        </div>
+                        
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="hotspot-city">City</label>
                             <div class="col-sm-10">

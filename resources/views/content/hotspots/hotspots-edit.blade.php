@@ -28,13 +28,7 @@
                     <form class="mb-3" action="{{ url('/hotspots/update') }}" method="post">
                         @csrf
                         <input type="hidden" name="id" value="{{ $hotspot->id }}" id="hotspot_id"/>
-                        <div class="row mb-3">
-                            <label class="col-sm-2 col-form-label" for="basic-default-name">Full Name</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="basic-default-name" name="name" value="{{ $hotspot->name }}" 
-                                    placeholder="John Doe" required/>
-                            </div>
-                        </div>
+                        
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="hotspot-address">Address</label>
                             <div class="col-sm-10">
@@ -49,6 +43,15 @@
                                 <button type="button" class="btn btn-primary" id="fill_auto_address">Fill automatically</button>
                             </div>
                         </div>
+                        
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="hotspot-name">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="hotspot-name" name="name" value="{{ $hotspot->name }}"
+                                    placeholder="Name" readonly required/>
+                            </div>
+                        </div>
+                        
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="hotspot-city">City</label>
                             <div class="col-sm-10">
