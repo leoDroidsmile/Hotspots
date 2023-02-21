@@ -46,7 +46,8 @@
       "name": "Payment",
       "icon": "menu-icon tf-icons bx bx-credit-card",
       "slug": "payment"
-    },
+    }
+    ,
     {
       "name": "Layouts",
       "icon": "menu-icon tf-icons bx bx-layout",

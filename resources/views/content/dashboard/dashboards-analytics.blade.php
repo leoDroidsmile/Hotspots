@@ -73,7 +73,7 @@
                     <small style="font-size:75%;">EARNINGS (MONTHLY)</small>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
-                    <h3 class="mb-0"></h3>
+                    <h3 class="mb-0">0000</h3>
                   </div>
                 </div>
               </div>
