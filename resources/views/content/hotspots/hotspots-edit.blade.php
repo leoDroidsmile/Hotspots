@@ -73,13 +73,16 @@
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="hotspot-owner">Owner</label>
                             <div class="btn-group col-sm-10">
-                                <input type="hidden" id="hotspot-owner-id" name="owner_id" value="{{ $hotspot->owner_id }}"/>
-                                <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="selecet_owner_button">Selct Owner</button>
-                                <ul class="dropdown-menu">
+                                <select class="form-select form-select-md" name="owner_id">
+                                    <option>Select Owner</option>
                                     @foreach ($users as $user)
-                                        <li><a class="dropdown-item" onclick="selectUser({{$user->id}})">{{$user->name}}</a></li>
+                                        @if($hotspot->owner_id == $user->id)
+                                            <option value="{{$user->id}}" selected>{{$user->name}}</option>
+                                        @else
+                                            <option value="{{$user->id}}">{{$user->name}}</option>
+                                        @endif
                                     @endforeach
-                                </ul>
+                                </select>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -100,13 +103,5 @@
             </div>
         </div>
     </div>
-
-    
-    <script>        
-        function selectUser(owner_id){
-            document.getElementById('hotspot-owner-id').value = owner_id;
-            document.getElementById('selecet_owner_button').text = this.value;
-        }
-   </script>
 
 @endsection
