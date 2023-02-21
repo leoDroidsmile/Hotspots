@@ -44,6 +44,8 @@ class Analytics extends Controller
     for($i = 0; $i < $last_month + 1; $i++)
       $monthlyEarning[$i] = 0;
     
+    $total_monthly_earning = 0;
+    $total_daily_earning = 0;
 
     foreach($hotspots as $key => $hotspot){
 
@@ -75,12 +77,30 @@ class Analytics extends Controller
 
         $hotspot->rewards = $earning;
         $hotspot->save();
+
+
+        // Total Daily Earning 
+        $min_time = date('Y-m-d', strtotime('-1 days'));
+        $url ='https://api.helium.io/v1/hotspots/'
+        . $hotspot["address"] . '/rewards/sum?'
+        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d");
+
+        $daily_earning = json_decode($client->request('GET', $url, [
+          'headers' => [
+              'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+          ]
+        ])->getBody()->getContents())->data->total;
       }
 
-
-      if(!Auth::user()->is_admin)
+      
+      if(!Auth::user()->is_admin){
         $hotspots[$key]->rewards = $hotspot->rewards * $hotspot->percentage / 100;
+        $total_daily_earning += $daily_earning * $hotspot->percentage / 100;
+      }else
+        $total_daily_earning += $daily_earning;
+        
 
+      $total_monthly_earning += $hotspots[$key]->rewards;
 
       // Get Sum Monthly Earnings
       
@@ -141,7 +161,7 @@ class Analytics extends Controller
     else
       $hotspots_online = number_format(0, 2, '.', '');
 
-    return view('content.dashboard.dashboards-analytics', compact('hotspots', 'monthlyEarning', 'hotspots_online'));
+    return view('content.dashboard.dashboards-analytics', compact('hotspots', 'monthlyEarning', 'hotspots_online', 'total_monthly_earning', 'total_daily_earning'));
   }
 
   public function refreshAble($updated_at){
