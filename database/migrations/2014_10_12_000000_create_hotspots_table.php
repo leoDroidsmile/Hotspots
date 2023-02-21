@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('address');
             $table->string('owner_id');
             $table->string('percentage');
+            $table->string('status');
+            $table->string('rewards');
             $table->timestamps();
         });
     }

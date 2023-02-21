@@ -210,7 +210,8 @@
                         <th data-sortable="true">City</th>
                         <th data-sortable="true">State</th>
                         <th data-sortable="true">Country</th>
-                        <th data-sortable="true">Status</th>                        
+                        <th data-sortable="true">Status</th>
+                        <th data-sortable="true">Rewards</th>                        
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
@@ -221,6 +222,7 @@
                             <td>{{ $hotspot->state }}</td>
                             <td>{{ $hotspot->country }}</td>
                             <td>{{ $hotspot->status }}</td>
+                            <td>{{ $hotspot->rewards }}</td>
                         </tr>
                     @endforeach
                 </tbody>

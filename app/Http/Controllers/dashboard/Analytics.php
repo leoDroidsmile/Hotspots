@@ -47,31 +47,51 @@ class Analytics extends Controller
 
     foreach($hotspots as $key => $hotspot){
 
-      // Get Hotspot Status
-      $url ='https://api.helium.io/v1/hotspots/' 
-        . $hotspot["address"];
-        
-      $hotspots[$key]["status"] = json_decode($client->request('GET', $url, [
-        'headers' => [
-            'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-        ]
-      ])->getBody()->getContents())->data->status->online;
+      $min_time = date("Y-01-01");
 
-      if($hotspots[$key]["status"] === 'online')
-          $hotspots_online++;
+      if($this->refreshAble($hotspot->updated_at)){
+
+        // Get Hotspot Status
+        $url ='https://api.helium.io/v1/hotspots/' 
+          . $hotspot["address"];
+          
+        $hotspot_status = json_decode($client->request('GET', $url, [
+          'headers' => [
+              'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+          ]
+        ])->getBody()->getContents())->data->status->online;
+        $hotspot->status = $hotspot_status;
+         
+        // Total Earning 
+        $url ='https://api.helium.io/v1/hotspots/'
+        . $hotspot["address"] . '/rewards/sum?'
+        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d");
+
+        $earning = json_decode($client->request('GET', $url, [
+          'headers' => [
+              'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+          ]
+        ])->getBody()->getContents())->data->total;
+
+        $hotspot->rewards = $earning;
+        $hotspot->save();
+      }
+
+
+      if(!Auth::user()->is_admin)
+        $hotspots[$key]->rewards = $hotspot->rewards * $hotspot->percentage / 100;
 
 
       // Get Sum Monthly Earnings
       
       for($month = 1; $month <= $last_month; $month++){
-
+        
         // If TimeStamp Diff is less than 60, Fetch HotSpot API
-        if($monthlyEarningDB[$month] && ($month < $last_month || (strtotime(date("Y-m-d H:i:s")) - strtotime($monthlyEarningDB[$month]->updated_at)) < 60)){
+        if($monthlyEarningDB[$month] && ($month < $last_month || $this->refreshAble($monthlyEarningDB[$month]->updated_at))){
           continue;
         }
-          
 
-        $min_time = date("Y-m-d", strtotime($year . '-' . $month . '-01'));
+        $min_time = date("Y-m-d", strtotime($year . '-' . $month . '-01'));  
         $max_time = date("Y-m-t", strtotime($year . '-' . $month));
 
         $url ='https://api.helium.io/v1/hotspots/' 
@@ -91,6 +111,10 @@ class Analytics extends Controller
         else 
           $monthlyEarning[$month] += $earning * $hotspot->percentage / 100;
       }
+
+
+      if($hotspot->status === 'online')
+        $hotspots_online++;
     }
     
 
@@ -118,5 +142,9 @@ class Analytics extends Controller
       $hotspots_online = number_format(0, 2, '.', '');
 
     return view('content.dashboard.dashboards-analytics', compact('hotspots', 'monthlyEarning', 'hotspots_online'));
+  }
+
+  public function refreshAble($updated_at){
+    return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60;
   }
 }

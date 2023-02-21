@@ -50,7 +50,8 @@ class Hotspots extends Controller
     $hotspot->address     = $postData["address"];
     $hotspot->owner_id    = $postData["owner_id"];
     $hotspot->percentage  = $postData["percentage"];
-
+    $hotspot->percentage  = 0;
+    
     $hotspot->save();
 
     Session::flash('success', 'Hotspot was added successfully!');
