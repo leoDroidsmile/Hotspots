@@ -5,17 +5,13 @@ namespace App\Http\Controllers\users;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Hotspot;
 use Hash;
 use Session;
 use Auth;
 
 class Users extends Controller
 {
-  public function __construct()
-  {
-      $this->middleware('auth');
-  }
-
   public function index()
   {
     $users = User::all()->except(Auth::id());
@@ -31,8 +27,12 @@ class Users extends Controller
     $email = $postData["email"];
 
     $user = User::where('email','=',$email)->first();
+
+    if(!$user)
+      return back();
+      
     Auth::loginUsingId($user->id, TRUE);
-    return redirect('/users/all');
+    return redirect('/');
   }
 
   public function create()
@@ -106,5 +106,17 @@ class Users extends Controller
 
     Session::flash('success', 'User was deleted successfully!');
     return redirect('/users/all');
+  }
+
+  public function logout(){
+    Session::flush();
+    Auth::logout();
+    return redirect('/login');
+  }
+
+  public function getHotspots(Request $request){
+    $user = User::find($request->id);
+    $hotspots = Hotspot::where('owner_id', '=', $user->id)->get();
+    return response()->json($hotspots, 200);
   }
 }

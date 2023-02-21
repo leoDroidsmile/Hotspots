@@ -62,7 +62,7 @@ class Hotspots extends Controller
   {
     $users = User::all()->except(Auth::id());
     return view('content.hotspots.hotspots-edit', [
-      'hotspot' => hotspot::where('id', '=', $request->input('id'))->first(),
+      'hotspot' => Hotspot::where('id', '=', $request->input('id'))->first(),
       'users' => $users
     ]);
   }

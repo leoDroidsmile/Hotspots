@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+$controller_path = 'App\Http\Controllers';
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/getHotspots', $controller_path . '\users\Users@getHotspots');
