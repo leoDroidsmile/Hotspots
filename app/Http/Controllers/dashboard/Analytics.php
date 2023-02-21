@@ -66,7 +66,7 @@ class Analytics extends Controller
       for($month = 1; $month <= $last_month; $month++){
 
         // If TimeStamp Diff is less than 60, Fetch HotSpot API
-        if($monthlyEarningDB[$month] && ($month < $last_month || (strtotime(date("Y-m-d H:i:s")) - strtotime($monthlyEarningDB[$month]->create_at)) < 30)){
+        if($monthlyEarningDB[$month] && ($month < $last_month || (strtotime(date("Y-m-d H:i:s")) - strtotime($monthlyEarningDB[$month]->updated_at)) < 60)){
           continue;
         }
           
@@ -101,11 +101,9 @@ class Analytics extends Controller
         $monthly_earning->user_id = Auth::user()->id;
         $monthly_earning->during = $year . '-' . $month;
         $monthly_earning->amount = $monthlyEarning[$month];   
-        $monthly_earning->created_at = date("Y-m-d H:i:s");
         $monthly_earning->save();
       }else if($monthlyEarningDB[$month] && $monthlyEarning[$month] != 0 && $monthlyEarningDB[$month]->amount != $monthlyEarning[$month]){
         $monthlyEarningDB[$month]->amount = $monthlyEarning[$month];
-        $monthlyEarningDB[$month]->created_at = date("Y-m-d H:i:s");
         $monthlyEarningDB[$month]->save();
       }
 
