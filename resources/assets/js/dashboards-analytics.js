@@ -575,6 +575,9 @@
   borderColor = config.colors.borderColor;
 
   var total_rewards = 0;
+  var max_monthly_earning = Math.max(monthlyEarning);
+  console.log("max_monthly_earning : ", max_monthly_earning);
+
   monthlyEarning.forEach(element => {
     total_rewards += element;
   });
@@ -669,7 +672,7 @@
           show: false
         },
         min: 0,
-        max: 10,
+        max: total_rewards,
         tickAmount: 4
       }
     };

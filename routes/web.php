@@ -111,5 +111,11 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/hotspots/edit', $controller_path . '\hotspots\Hotspots@edit')->name('hotspots-edit');
     Route::post('/hotspots/update', $controller_path . '\hotspots\Hotspots@update')->name('hotspots-update');
     Route::post('/hotspots/delete', $controller_path . '\hotspots\Hotspots@delete')->name('hotspots-delete');    
+
+
+    // =====================    Payment Management         ============================= //
+    Route::get('/payment', $controller_path . '\payments\PaymentsHotspot@index')->name('payment-index');
+    Route::post('/payment/markpaid', $controller_path . '\payments\PaymentsHotspot@markPaid')->name('payment-markpaid');
+    
 });
 

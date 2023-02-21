@@ -20,9 +20,9 @@
         @foreach ($menuData[0]->menu as $menu)
             {{-- adding active and open class if child is active --}}
 
-            @if(isset($menu->name) && $menu->name != 'Dashboard' && !Auth::user()->is_admin)
+            @if(isset($menu->name) && $menu->name != 'Dashboard' && $menu->name != 'Payment' && !Auth::user()->is_admin)
                 @php
-                    break;
+                    continue;
                 @endphp
             @endif
 
