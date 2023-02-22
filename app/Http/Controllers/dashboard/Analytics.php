@@ -116,7 +116,7 @@ class Analytics extends Controller
         $total_monthly_earning += $hotspot->monthly_earning;
       }
 
-      $hotspots[$key]->rewards = $hotspot->monthly_earning;
+      $hotspots[$key]->rewards = $this->numberFormat($hotspot->monthly_earning);
 
 
 
@@ -171,19 +171,27 @@ class Analytics extends Controller
       }
 
       if($monthlyEarning[$month] == 0)
-        $monthlyEarning[$month] = floatval($monthlyEarningDB[$month]->amount);
+        $monthlyEarning[$month] = $this->numberFormat(floatval($monthlyEarningDB[$month]->amount));
+      else
+        $monthlyEarning[$month] = $this->numberFormat($monthlyEarning[$month]);
     }
 
 
     if(count($hotspots) != 0)
-      $hotspots_online = number_format($hotspots_online / count($hotspots) * 100, 2, '.', '');
+      $hotspots_online = $this->numberFormat($hotspots_online / count($hotspots) * 100);
     else
-      $hotspots_online = number_format(0, 2, '.', '');
+      $hotspots_online = $this->numberFormat(0);
 
+    $total_monthly_earning = $this->numberFormat($total_monthly_earning);
+    $total_daily_earning = $this->numberFormat($total_daily_earning);
     return view('content.dashboard.dashboards-analytics', compact('hotspots', 'monthlyEarning', 'hotspots_online', 'total_monthly_earning', 'total_daily_earning'));
   }
 
   public function refreshAble($updated_at){
     return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60 * 60 * 24;
+  }
+
+  private function numberFormat($number){
+    return floatval(number_format($number, 2, '.', ''));
   }
 }
