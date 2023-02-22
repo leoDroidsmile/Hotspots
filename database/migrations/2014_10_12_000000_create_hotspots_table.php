@@ -23,7 +23,8 @@ return new class extends Migration
             $table->string('owner_id');
             $table->string('percentage');
             $table->string('status');
-            $table->string('rewards');
+            $table->string('daily_earning');
+            $table->string('monthly_earning');
             $table->timestamps();
         });
     }

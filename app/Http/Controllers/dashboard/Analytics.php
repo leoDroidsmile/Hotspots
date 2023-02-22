@@ -49,8 +49,6 @@ class Analytics extends Controller
 
     foreach($hotspots as $key => $hotspot){
 
-      $min_time = date('Y-m-d', strtotime('-30 days'));
-
       if($this->refreshAble($hotspot->updated_at)){
 
         // Get Hotspot Status
@@ -64,43 +62,51 @@ class Analytics extends Controller
         ])->getBody()->getContents())->data->status->online;
         $hotspot->status = $hotspot_status;
          
-        // Total Earning 
+
+        // Total Monthly Earning 
+        $min_time = date('Y-m-d H:i:s', strtotime('-30 days'));
+
         $url ='https://api.helium.io/v1/hotspots/'
         . $hotspot["address"] . '/rewards/sum?'
-        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d");
+        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d H:i:s");
 
-        $earning = json_decode($client->request('GET', $url, [
+        $monthly_earning = json_decode($client->request('GET', $url, [
           'headers' => [
               'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
           ]
         ])->getBody()->getContents())->data->total;
 
-        $hotspot->rewards = $earning;
-        $hotspot->save();
-
 
         // Total Daily Earning 
-        $min_time = date('Y-m-d', strtotime('-1 days'));
+        $min_time = date('Y-m-d H:i:s', strtotime('-1 days'));
         $url ='https://api.helium.io/v1/hotspots/'
         . $hotspot["address"] . '/rewards/sum?'
-        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d");
+        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d H:i:s");
 
         $daily_earning = json_decode($client->request('GET', $url, [
           'headers' => [
               'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
           ]
         ])->getBody()->getContents())->data->total;
+
+        $hotspot->monthly_earning = $monthly_earning;
+        $hotspot->daily_earning = $daily_earning;
+        $hotspot->updated_at = date('Y-m-d H:i:s');
+        $hotspot->save();
       }
 
       
       if(!Auth::user()->is_admin){
-        $hotspots[$key]->rewards = $hotspot->rewards * $hotspot->percentage / 100;
-        $total_daily_earning += $daily_earning * $hotspot->percentage / 100;
-      }else
-        $total_daily_earning += $daily_earning;
-        
+        $total_daily_earning += $hotspot->daily_earning * $hotspot->percentage / 100;
+        $total_monthly_earning += $hotspot->monthly_earning * $hotspot->percentage / 100;
+      }else{
+        $total_daily_earning += $hotspot->daily_earning;
+        $total_monthly_earning += $hotspot->monthly_earning;
+      }
 
-      $total_monthly_earning += $hotspots[$key]->rewards;
+      $hotspots[$key]->rewards = $hotspot->monthly_earning;
+
+
 
       // Get Sum Monthly Earnings
       
@@ -165,6 +171,6 @@ class Analytics extends Controller
   }
 
   public function refreshAble($updated_at){
-    return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60;
+    return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60 * 60;
   }
 }
