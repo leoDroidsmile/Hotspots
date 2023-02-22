@@ -52,43 +52,55 @@ class Analytics extends Controller
       if($this->refreshAble($hotspot->updated_at)){
 
         // Get Hotspot Status
-        $url ='https://api.helium.io/v1/hotspots/' 
+        $url ='https://www.heliumtracker.io/api/hotspots/' 
           . $hotspot["address"];
           
         $hotspot_status = json_decode($client->request('GET', $url, [
           'headers' => [
               'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+               "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
           ]
-        ])->getBody()->getContents())->data->status->online;
-        $hotspot->status = $hotspot_status;
+        ])->getBody()->getContents());
+
+        if($hotspot_status->online)
+          $hotspot->status = "online";
+        else
+          $hotspot->status = "offline";
          
 
         // Total Monthly Earning 
-        $min_time = date('Y-m-d\TH:i:s.000', strtotime('-30 days')) . 'Z';
+        // $min_time = date('Y-m-d\TH:i:s.000', strtotime('-30 days')) . 'Z';
 
-        $url ='https://api.helium.io/v1/hotspots/'
-        . $hotspot["address"] . '/rewards/sum?'
-        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d\TH:i:s.000") . 'Z';
+        // $url ='https://www.heliumtracker.io/api/hotspots/'
+        // . $hotspot["address"] . '/rewards/sum?'
+        // . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d\TH:i:s.000") . 'Z';
 
-        $monthly_earning = json_decode($client->request('GET', $url, [
-          'headers' => [
-              'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-          ]
-        ])->getBody()->getContents())->data->total;
+        // $monthly_earning = json_decode($client->request('GET', $url, [
+        //   'headers' => [
+        //       'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+        //       "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
+
+        //   ]
+        // ])->getBody()->getContents())->data->total;
+        $monthly_earning = $hotspot_status->rewards_30d;
 
 
         // Total Daily Earning 
-        $min_time = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
-        $url ='https://api.helium.io/v1/hotspots/'
-        . $hotspot["address"] . '/rewards/sum?'
-        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d\TH:i:s.000") . 'Z';
+        // $min_time = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
+        // $url ='https://www.heliumtracker.io/api/hotspots/'
+        // . $hotspot["address"] . '/rewards/sum?'
+        // . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d\TH:i:s.000") . 'Z';
 
-        $daily_earning = json_decode($client->request('GET', $url, [
-          'headers' => [
-              'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-          ]
-        ])->getBody()->getContents())->data->total;
+        // $daily_earning = json_decode($client->request('GET', $url, [
+        //   'headers' => [
+        //       'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+        //       "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
 
+        //   ]
+        // ])->getBody()->getContents())->data->total;
+        $daily_earning = $hotspot_status->rewards_today;
+
+        
         $hotspot->monthly_earning = $monthly_earning;
         $hotspot->daily_earning = $daily_earning;
         $hotspot->updated_at = date('Y-m-d H:i:s');
@@ -129,6 +141,7 @@ class Analytics extends Controller
         $earning = json_decode($client->request('GET', $url, [
           'headers' => [
               'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+              // "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
           ]
         ])->getBody()->getContents())->data->total;
 
@@ -171,6 +184,6 @@ class Analytics extends Controller
   }
 
   public function refreshAble($updated_at){
-    return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60 * 60 * 5;
+    return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60 * 60 * 24;
   }
 }
