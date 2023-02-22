@@ -64,11 +64,11 @@ class Analytics extends Controller
          
 
         // Total Monthly Earning 
-        $min_time = date('Y-m-d H:i:s', strtotime('-30 days'));
+        $min_time = date('Y-m-dTH:i:sZ', strtotime('-30 days'));
 
         $url ='https://api.helium.io/v1/hotspots/'
         . $hotspot["address"] . '/rewards/sum?'
-        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d H:i:s");
+        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-dTH:i:sZ");
 
         $monthly_earning = json_decode($client->request('GET', $url, [
           'headers' => [
@@ -78,10 +78,10 @@ class Analytics extends Controller
 
 
         // Total Daily Earning 
-        $min_time = date('Y-m-d H:i:s', strtotime('-1 days'));
+        $min_time = date('Y-m-dTH:i:sZ', strtotime('-1 days'));
         $url ='https://api.helium.io/v1/hotspots/'
         . $hotspot["address"] . '/rewards/sum?'
-        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-d H:i:s");
+        . 'min_time=' . $min_time . '&max_time=' . date("Y-m-dTH:i:sZ");
 
         $daily_earning = json_decode($client->request('GET', $url, [
           'headers' => [
