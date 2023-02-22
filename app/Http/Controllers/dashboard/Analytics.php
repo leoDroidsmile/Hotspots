@@ -12,6 +12,8 @@ use Auth;
 
 class Analytics extends Controller
 {
+  public $all_hotspots = array();
+
   public function __construct()
   {
       $this->middleware('auth');
@@ -47,22 +49,18 @@ class Analytics extends Controller
     $total_monthly_earning = 0;
     $total_daily_earning = 0;
 
+
+    // Init All Hotspots member variables
+    $this->getAllHotspots();
+    
+
     foreach($hotspots as $key => $hotspot){
 
       $min_time = date('Y-m-d', strtotime('-30 days'));
 
       if($this->refreshAble($hotspot->updated_at)){
-
-        // Get Hotspot Status
-        $url ='https://api.helium.io/v1/hotspots/' 
-          . $hotspot["address"];
-          
-        $hotspot_status = json_decode($client->request('GET', $url, [
-          'headers' => [
-              'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-          ]
-        ])->getBody()->getContents())->data->status->online;
-        $hotspot->status = $hotspot_status;
+        
+        $hotspot->status = $this->getHotspotStatus($hotspot->address);
          
         // Total Earning 
         $url ='https://api.helium.io/v1/hotspots/'
@@ -166,5 +164,28 @@ class Analytics extends Controller
 
   public function refreshAble($updated_at){
     return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60;
+  }
+
+
+  private function getAllHotspots(){
+    $client = new GuzzleHttp\Client();
+    
+    // Get All Hotspot Status registered
+    $url ='https://api.helium.io/v1/hotspots/';
+          
+    $this->all_hotspots = json_decode($client->request('GET', $url, [
+      'headers' => [
+          'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+      ]
+    ])->getBody()->getContents())->data;
+  }
+
+
+  // Get Hotspot Status from fetched all hotspots
+  private function getHotspotStatus($hotspot_address){
+    foreach($this->all_hotspots as $hotspot){
+      if($hotspot->address == $hotspot_address)
+        return $hotspot->status->online;
+    }
   }
 }
