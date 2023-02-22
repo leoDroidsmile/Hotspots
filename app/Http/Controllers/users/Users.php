@@ -28,11 +28,13 @@ class Users extends Controller
 
     $user = User::where('email','=',$email)->first();
 
-    if(!$user)
+    if ($user && Hash::check($postData["password"], $user->password)){
+      Auth::loginUsingId($user->id, TRUE);
+      return redirect('/');
+    }else{
+      Session::flash('error', 'Invalid Login Credentials');
       return back();
-      
-    Auth::loginUsingId($user->id, TRUE);
-    return redirect('/');
+    }
   }
 
   public function create()
