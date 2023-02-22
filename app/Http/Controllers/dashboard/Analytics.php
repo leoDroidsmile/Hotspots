@@ -171,6 +171,6 @@ class Analytics extends Controller
   }
 
   public function refreshAble($updated_at){
-    return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60 * 60;
+    return strtotime(date("Y-m-d H:i:s")) - strtotime($updated_at) > 60 * 60 * 5;
   }
 }
