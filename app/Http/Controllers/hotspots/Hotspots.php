@@ -50,7 +50,7 @@ class Hotspots extends Controller
     $hotspot->address     = $postData["address"];
     $hotspot->owner_id    = $postData["owner_id"];
     $hotspot->percentage  = $postData["percentage"];
-    $hotspot->percentage  = "online";
+    $hotspot->status      = "online";
     $hotspot->daily_earning  = 0;
     $hotspot->monthly_earning  = 0;
     $hotspot->updated_at  = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
