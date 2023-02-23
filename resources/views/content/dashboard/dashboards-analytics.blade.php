@@ -44,8 +44,8 @@
           <div class="card-body">
             <div class="d-flex pb-1">
               <div class="col-lg-9">
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                  <div class="me-2">
+                <div class="w-100 flex-wrap">
+                  <div class="me-2 mb-2">
                     <small style="font-size:75%;">EARNINGS (DAILY)</small>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
@@ -68,8 +68,8 @@
           <div class="card-body">
             <div class="d-flex pb-1">
               <div class="col-lg-9">
-                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                  <div class="me-2">
+                <div class="w-100 flex-wrap">
+                  <div class="me-2 mb-2">
                     <small style="font-size:75%;">EARNINGS (MONTHLY)</small>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
