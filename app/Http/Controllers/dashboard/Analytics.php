@@ -35,7 +35,7 @@ class Analytics extends Controller
     // Get Current Monthly_Earning from Database
     $monthlyEarningDB = array($last_month);
     for($month = 0; $month <= $last_month; $month++){
-      $monthlyEarningDB[$month] = MonthlyEarning::where("user_id", "=", Auth::user()->id)->where("during", "=", $year . '-'. $month)->first();
+      $monthlyEarningDB[$month] = MonthlyEarning::where("user_id", "=", Auth::user()->id)->where("during", "=", $year . '-'. $this->monthFormat($month))->first();
     }
 
 
@@ -125,7 +125,7 @@ class Analytics extends Controller
       for($month = 1; $month <= $last_month; $month++){
         
         // If TimeStamp Diff is less than 60, Fetch HotSpot API
-        if($monthlyEarningDB[$month] && ($month < $last_month || $this->refreshAble($monthlyEarningDB[$month]->updated_at))){
+        if($monthlyEarningDB[$month] && !$this->refreshAble($monthlyEarningDB[$month]->updated_at)){
           continue;
         }
 
@@ -162,10 +162,15 @@ class Analytics extends Controller
       if(!$monthlyEarningDB[$month]){
         $monthly_earning = new MonthlyEarning();
         $monthly_earning->user_id = Auth::user()->id;
-        $monthly_earning->during = $year . '-' . $month;
+
+        if($month < 10)
+          $monthly_earning->during = $year . '-0' . $month;
+        else
+          $monthly_earning->during = $year . '-' . $month;
+
         $monthly_earning->amount = $monthlyEarning[$month];   
         $monthly_earning->save();
-      }else if($monthlyEarningDB[$month] && $monthlyEarning[$month] != 0 && $monthlyEarningDB[$month]->amount != $monthlyEarning[$month]){
+      }else if($monthlyEarningDB[$month] && $monthlyEarning[$month] != 0){
         $monthlyEarningDB[$month]->amount = $monthlyEarning[$month];
         $monthlyEarningDB[$month]->save();
       }
@@ -193,5 +198,12 @@ class Analytics extends Controller
 
   private function numberFormat($number){
     return floatval(number_format($number, 2, '.', ''));
+  }
+
+  private function monthFormat($month){
+    if($month < 10)
+      return '0' . $month;
+    else
+      return $month;
   }
 }

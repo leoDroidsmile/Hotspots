@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Hotspot;
+use App\Models\MonthlyEarning;
 use Session;
 use Auth;
 
@@ -57,6 +58,16 @@ class Hotspots extends Controller
 
     $hotspot->save();
 
+    $year = date('Y');
+    $month = date('m');
+    
+    $monthlyEarningDB = MonthlyEarning::where("user_id", "=", Auth::user()->id)->get();
+    
+    foreach($monthlyEarningDB as $monthlyEarning){
+      $monthlyEarning->updated_at = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
+      $monthlyEarning->save();  
+    }
+    
     Session::flash('success', 'Hotspot was added successfully!');
 
     return back();
