@@ -103,8 +103,10 @@ class Analytics extends Controller
       ->get();
 
     $dailyEarningHistory = array();
+    $categories = array();
     foreach($daily_earning_history as $item){
       $dailyEarningHistory[] = floatval($item->amount);
+      $categories[] = $item->date;
     }
       
     if(count($hotspots) != 0)
@@ -114,7 +116,7 @@ class Analytics extends Controller
 
     $total_monthly_earning = $this->numberFormat($total_monthly_earning);
     $total_daily_earning = $this->numberFormat($total_daily_earning);
-    return view('content.dashboard.dashboards-analytics', compact('hotspots', 'dailyEarningHistory', 'hotspots_online', 'total_monthly_earning', 'total_daily_earning'));
+    return view('content.dashboard.dashboards-analytics', compact('hotspots', 'dailyEarningHistory', 'hotspots_online', 'total_monthly_earning', 'total_daily_earning', 'categories'));
   }
 
   public function refreshAble($updated_at){

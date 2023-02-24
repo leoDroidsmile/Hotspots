@@ -236,6 +236,7 @@
 <script>
 
 var monthlyEarning = <?php echo json_encode($dailyEarningHistory);?>;
+var categories = <?php echo json_encode($categories);?>;
 console.log("monthlyEarning : ", monthlyEarning);
 
   // $(document).ready(function(){

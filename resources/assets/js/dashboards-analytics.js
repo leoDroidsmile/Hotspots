@@ -575,11 +575,12 @@
   borderColor = config.colors.borderColor;
 
   var total_rewards = 0;
-  var max_monthly_earning = Math.max(monthlyEarning);
-  console.log("max_monthly_earning : ", max_monthly_earning);
-
+  var max_monthly_earning = 0;
+  
   monthlyEarning.forEach(element => {
     total_rewards += element;
+    if(max_monthly_earning < parseFloat(element))
+      max_monthly_earning = element;
   });
 
   document.getElementById('total_rewards').innerHTML = '$' + total_rewards;
@@ -652,7 +653,7 @@
         }
       },
       xaxis: {
-        categories: ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        categories: categories,
         axisBorder: {
           show: false
         },
@@ -672,7 +673,7 @@
           show: false
         },
         min: 0,
-        max: total_rewards,
+        max: max_monthly_earning,
         tickAmount: 4
       }
     };
