@@ -3,7 +3,7 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
-class MonthlyEarning extends Model
+class DailyEarning extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,9 @@ class MonthlyEarning extends Model
      */
     protected $fillable = [
         'user_id',
-        'during',
+        'date',
         'amount',
     ];
+
+    public $timestamps = false;
 }

@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('monthly_earnings', function (Blueprint $table) {
+        Schema::create('daily_earnings', function (Blueprint $table) {
             $table->id();
             $table->string('user_id');
-            $table->string('during');
+            $table->string('date');
             $table->string('amount');
-            $table->timestamps();
         });
     }
 
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('monthly_earnings');
+        Schema::dropIfExists('daily_earnings');
     }
 };

@@ -235,8 +235,8 @@
 
 <script>
 
-var monthlyEarning = <?php echo json_encode($monthlyEarning);?>;
-
+var monthlyEarning = <?php echo json_encode($dailyEarningHistory);?>;
+console.log("monthlyEarning : ", monthlyEarning);
 
   // $(document).ready(function(){
   //   var url = 'api/getHotspots/?id=' + {{ Auth::user()->id }}

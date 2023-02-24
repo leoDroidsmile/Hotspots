@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Hotspot;
-use App\Models\MonthlyEarning;
+use App\Models\DailyEarning;
+use GuzzleHttp;
 use Session;
 use Auth;
 
@@ -56,18 +57,44 @@ class Hotspots extends Controller
     $hotspot->monthly_earning  = 0;
     $hotspot->updated_at  = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
 
+
+    // Get Hotspot address via API
+    $url ='https://www.heliumtracker.io/api/hotspots/' 
+    . $hotspot->address;
+    
+    $client = new GuzzleHttp\Client();
+
+    $hotspot_status = json_decode($client->request('GET', $url, [
+      'headers' => [
+          'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+          "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
+      ]
+    ])->getBody()->getContents());
+
+    $hotspot->daily_earning = $hotspot_status->rewards_today;
+    $hotspot->monthly_earning = $hotspot_status->rewards_30d;
+
     $hotspot->save();
 
-    $year = date('Y');
-    $month = date('m');
     
-    $monthlyEarningDB = MonthlyEarning::where("user_id", "=", Auth::user()->id)->get();
+    // // Save created hotspot Daily Earning to database for Admin
+    // $dailyEarning = DailyEarning::where("user_id", "=", Auth::user()->id)
+    //   ->where("date", "=", date("Y-m-d"))->first();
     
-    foreach($monthlyEarningDB as $monthlyEarning){
-      $monthlyEarning->updated_at = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
-      $monthlyEarning->save();  
-    }
+    // if($dailyEarning){
+    //   $dailyEarning->amount += $daily_earning;
+    //   $dailyEarning->save();
+    // }
+
+
+    // $dailyEarning = DailyEarning::where("user_id", "=", $hotspot->owner_id)
+    //   ->where("date", "=", date("Y-m-d"))->first();
     
+    // if($dailyEarning){
+    //   $dailyEarning->amount += $daily_earning * $hotspot->percentage / 100;
+    //   $dailyEarning->save();
+    // }
+
     Session::flash('success', 'Hotspot was added successfully!');
 
     return back();
