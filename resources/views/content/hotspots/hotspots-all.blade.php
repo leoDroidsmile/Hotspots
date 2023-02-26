@@ -106,6 +106,7 @@
     <script type="module">
         $(document).ready(function(){
             alert();
+            ;
         });
     </script>
 @endsection
