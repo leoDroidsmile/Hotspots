@@ -88,11 +88,11 @@
                                             </form>
 
                                             <script>
-                                                var data = "type:payment" + 
-                                                            "utf8Memo: true" + 
-                                                            "address: 14khJcm9tpNgeSUr4D7zvbZ5zpzMxwkc3vC6GiGZRy2sSZxp4V5" + 
-                                                            "amount:" + "<?php echo $payment->amount; ?>" + 
-                                                            "memo:" + "<?php echo $payment->random; ?>";
+                                                var data = "{ type:payment, " + 
+                                                            "utf8Memo: true," + 
+                                                            "address: 14khJcm9tpNgeSUr4D7zvbZ5zpzMxwkc3vC6GiGZRy2sSZxp4V5," + 
+                                                            "amount:" + "<?php echo $payment->amount; ?>," + 
+                                                            "memo:" + "<?php echo $payment->random; ?> }";
 
                                                 var url = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${data}`;
                                                 var code = document.querySelector('#qrcode{{$payment->id}}');
