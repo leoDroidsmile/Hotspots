@@ -44,6 +44,13 @@ class Hotspots extends Controller
 
     $postData = $request->post();
 
+    $is_origin = Hotspot::where('address', '=', $postData['address']);
+    if($is_origin) {
+      Session::flash('error', 'Hotspot with same address already exists!');
+
+      return back();
+    }
+
     $hotspot = new Hotspot;
     $hotspot->name        = $postData["name"];
     $hotspot->city        = $postData["city"];
@@ -55,7 +62,7 @@ class Hotspots extends Controller
     $hotspot->status      = "online";
     $hotspot->daily_earning  = 0;
     $hotspot->monthly_earning  = 0;
-    $hotspot->updated_at  = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
+    // $hotspot->updated_at  = date('Y-m-d\TH:i:s.000', strtotime('-1 days')) . 'Z';
 
 
     // Get Hotspot address via API

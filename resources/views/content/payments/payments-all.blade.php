@@ -90,7 +90,7 @@
                                             <script>
                                                 var data = "type:payment" + 
                                                             "utf8Memo: true" + 
-                                                            "address: 12ORy9GjFASqWWxHmUq4tNXcjvr5Xfno8qimGMrNReMsSaM9T8f" + 
+                                                            "address: 14khJcm9tpNgeSUr4D7zvbZ5zpzMxwkc3vC6GiGZRy2sSZxp4V5" + 
                                                             "amount:" + "<?php echo $payment->amount; ?>" + 
                                                             "memo:" + "<?php echo $payment->random; ?>";
 

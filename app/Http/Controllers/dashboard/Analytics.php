@@ -26,46 +26,45 @@ class Analytics extends Controller
 
     $hotspots_online = 0;
 
-    $client = new GuzzleHttp\Client();
+    // $client = new GuzzleHttp\Client();
 
-    $year = date('Y');
-    $last_month = date('m');
-    
+    // $year = date('Y');
+    // $last_month = date('m');
 
-    // Get Daily Earning from Database
+    // // Get Daily Earning from Database
     
     $total_monthly_earning = 0;
     $total_daily_earning = 0;
 
     foreach($hotspots as $key => $hotspot){
 
-      if($this->refreshAble($hotspot->updated_at)){
+      // if($this->refreshAble($hotspot->updated_at)){
 
-        // Get Hotspot Status
-        $url ='https://www.heliumtracker.io/api/hotspots/' 
-          . $hotspot["address"];
+      //   // Get Hotspot Status
+      //   $url ='https://www.heliumtracker.io/api/hotspots/' 
+      //     . $hotspot["address"];
           
-        $hotspot_status = json_decode($client->request('GET', $url, [
-          'headers' => [
-              'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-               "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
-          ]
-        ])->getBody()->getContents());
+      //   $hotspot_status = json_decode($client->request('GET', $url, [
+      //     'headers' => [
+      //         'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+      //          "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
+      //     ]
+      //   ])->getBody()->getContents());
 
-        if($hotspot_status->online)
-          $hotspot->status = "online";
-        else
-          $hotspot->status = "offline";
+      //   if($hotspot_status->online)
+      //     $hotspot->status = "online";
+      //   else
+      //     $hotspot->status = "offline";
       
-        $monthly_earning = $hotspot_status->rewards_30d;
-        $daily_earning = $hotspot_status->rewards_today;
+      //   $monthly_earning = $hotspot_status->rewards_30d;
+      //   $daily_earning = $hotspot_status->rewards_today;
         
 
-        $hotspot->monthly_earning = $monthly_earning;
-        $hotspot->daily_earning = $daily_earning;
-        $hotspot->updated_at = date('Y-m-d H:i:s');
-        $hotspot->save();
-      }
+      //   $hotspot->monthly_earning = $monthly_earning;
+      //   $hotspot->daily_earning = $daily_earning;
+      //   $hotspot->updated_at = date('Y-m-d H:i:s');
+      //   $hotspot->save();
+      // }
 
        
       if(!Auth::user()->is_admin){
@@ -82,16 +81,16 @@ class Analytics extends Controller
         $hotspots_online++;
     }
     
-    // Update Today Earning in DailyEarning table
-    $today_earning = DailyEarning::where("user_id", "=", Auth::user()->id)->where("date", "=", date('Y-m-d'))->first();
-    if(!$today_earning){
-      $today_earning = new DailyEarning();
-      $today_earning->user_id = Auth::user()->id;
-      $today_earning->date = date("Y-m-d");
-    }
+    // // Update Today Earning in DailyEarning table
+    // $today_earning = DailyEarning::where("user_id", "=", Auth::user()->id)->where("date", "=", date('Y-m-d'))->first();
+    // if(!$today_earning){
+    //   $today_earning = new DailyEarning();
+    //   $today_earning->user_id = Auth::user()->id;
+    //   $today_earning->date = date("Y-m-d");
+    // }
     
-    $today_earning->amount = $total_daily_earning;
-    $today_earning->save();
+    // $today_earning->amount = $total_daily_earning;
+    // $today_earning->save();
   
     $begin = date("Y-m-d", strtotime(Auth::user()->created_at));
     $end = date('Y-m-d');

@@ -13,14 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->unsigned();
-            $table->date('during');
-            $table->string('amount');
-            $table->string('random');
-            $table->integer('status_id')->unsigned();
-            $table->timestamp('paid_at')->nullable();
+        Schema::table('hotspots', function (Blueprint $table) {
+            //
         });
     }
 
@@ -31,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::table('hotspots', function (Blueprint $table) {
+            //
+        });
     }
 };

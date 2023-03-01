@@ -31,13 +31,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 fetch(url, { method: 'GET' })
                     .then(Result => Result.json())
                     .then(response => {
+                        if(response.hasOwnProperty('error')){
+                            alert(response['error']);
+                            return;
+                        }
                         console.log(response);
                         document.getElementById('hotspot-name').value = response.data.name;
                         document.getElementById('hotspot-city').value = response.data.geocode.long_city;
                         document.getElementById('hotspot-state').value = response.data.geocode.long_state;
                         document.getElementById('hotspot-country').value = response.data.geocode.long_country;
                     })
-                    .catch(errorMsg => { console.log(errorMsg); });
+                    .catch(errorMsg => { 
+                        console.log(errorMsg); 
+                    });
             });
         }
         

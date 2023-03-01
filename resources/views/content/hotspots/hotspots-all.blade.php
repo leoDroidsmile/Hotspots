@@ -11,7 +11,6 @@
     <div class="card">
       <div class="card-header d-flex align-items-center justify-content-between">
         <h5 class="mb-0">All Hotspots</h5> <small class="text-muted float-end"></small>
-        <button type="button" class="btn btn-primary" id="from_csv_btn">From CSV</button>
       </div>
       <div class="card-body">
 
@@ -103,10 +102,4 @@
     </div>
     <!--/ Basic Bootstrap Table -->
     <!--/ Responsive Table -->
-    <script type="module">
-        $(document).ready(function(){
-            alert();
-            ;
-        });
-    </script>
 @endsection

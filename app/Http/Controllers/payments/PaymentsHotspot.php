@@ -3,13 +3,19 @@
 namespace App\Http\Controllers\payments;
 
 use App\Http\Controllers\Controller;
+use DateInterval;
+use DatePeriod;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Hotspot;
 use App\Models\Payment;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redis;
 use Session;
 use Auth;
 use GuzzleHttp;
+
+use App\Jobs\ProcessUpdatePaymentAPI;
 
 class PaymentsHotspot extends Controller
 {
@@ -21,71 +27,49 @@ class PaymentsHotspot extends Controller
     public function index()
     {
         if(Auth::user()->is_admin){
-            $payments = Payment::all();
+            $payments = Payment::orderBy('during','DESC')->get();
             $hotspots = Hotspot::all();
         }
         else{
-            $payments = Payment::where("user_id", '=', Auth::user()->id)->get();
+            $payments = Payment::where("user_id", '=', Auth::user()->id)->orderBy('during','DESC')->get();
             $hotspots = Hotspot::where("owner_id", '=', Auth::user()->id)->get();
         }
 
+        // Verify Jobs are running
 
-        $client = new GuzzleHttp\Client();
+        if(count(DB::table('jobs')->get()->all())){
+            return view('content.payments.payments-all', compact('payments'));
+        }
+        $payment_monthly = [];
+        // Get current month and last updated month
 
-        $year = date('Y');
-        $last_month = date('m');
-        
-        // $monthlyEarning = array($last_month);
-        // for($i = 0; $i < $last_month + 1; $i++)
-        //   $monthlyEarning[$i] = 0;
+        foreach ($hotspots as $key => $hotspot) {
+            # code...
 
-
-        // Get Monthly Earnings
-
-            
-        for($month = 1; $month <= $last_month - 1; $month++){
-
-            $payment = Payment::where('during', '=', $year . '-'. $month)->where('user_id', Auth::user()->id)->first();
-            
-            if($payment)
-                continue;
-
-            
-            $payment = new Payment();
-            $payment->user_id = Auth::user()->id;
-            $payment->during = $year . '-'. $month;
-            $payment->amount = 0;
-            $payment->random = $this->generateRandomString(6);
-            $payment->status_id = 1;
-            $payment->paid_at = null;
-            $payment->save();
-                    
-            foreach($hotspots as $key => $hotspot){
-            
-                $min_time = date("Y-m-d", strtotime($year . '-' . $month . '-01'));
-                $max_time = date("Y-m-t", strtotime($year . '-' . $month));
-        
-                $url ='https://api.helium.io/v1/hotspots/' 
-                . $hotspot["address"] . '/rewards/sum?'
-                . 'min_time=' . $min_time . '&max_time=' . $max_time;
-                    
-                $monthlyEarning = json_decode($client->request('GET', $url, [
-                'headers' => [
-                    'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-                ]
-                ])->getBody()->getContents())->data->total;
-                
-                $payment->amount += $monthlyEarning;
-                $payment->save();
+            // If payment_table is not empty, calculate the pay_month
+            $user_id = $hotspot->owner_id;
+            if($payments->first()) {
+                $begin = date_create($payments->first()->during);
             }
-        }
+            else {
+                $begin = date_create($hotspot->created_at);
+            }
+            $end = date_create('now');
 
+            $start = $begin;
+            $daterange = new DatePeriod($begin,new DateInterval("P1M"), $end);
 
-        if(Auth::user()->is_admin){
-            $payments = Payment::all();
-        }
-        else{
-            $payments = Payment::where("user_id", '=', Auth::user()->id)->get();
+            foreach($daterange as $date) {
+                $next = clone $start;
+                $next->modify('first day of next month 00:00:00');
+                if($next > $end)
+                    break;
+                
+                // Call API to get reward for one Month
+
+                ProcessUpdatePaymentAPI::dispatch($start, $next, $hotspot->address, $user_id);
+                $start = $next;
+            }
         }
 
         return view('content.payments.payments-all', compact('payments'));
