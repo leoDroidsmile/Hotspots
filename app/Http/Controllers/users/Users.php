@@ -47,7 +47,7 @@ class Users extends Controller
     $this->validate($request, array(
       'name' => 'required|max:255',
       'email' => 'required|email|max:255',
-      'password' => 'required|min:5|max:2000'
+      'password' => 'required|min:5|max:2000',
     )
     );
 
@@ -59,6 +59,7 @@ class Users extends Controller
     $user->email_verified_at = date('Y-m-d H:i:s');
     $user->password = Hash::make($postData["password"]);
     $user->is_admin = false;
+    $user->currency = $postData['currency'];
     $user->save();
 
     Session::flash('success', 'User was added successfully!');

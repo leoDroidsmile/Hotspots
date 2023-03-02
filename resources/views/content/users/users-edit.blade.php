@@ -54,6 +54,20 @@
                                     placeholder="Password" required/>
                             </div>
                         </div>
+                        
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="basic-default-password">Currency</label>
+                            <div class="col-sm-10">
+                                <select class="form-select" aria-label="Select Currency" name="currency">
+                                    <option value="0" @if (!$user->currency)
+                                        selected
+                                    @endif>CAD</option>
+                                    <option value="1" @if ($user->currency)
+                                        selected
+                                    @endif>USD</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="row justify-content-end">
                             <div class="col-sm-10">
                                 <button type="submit" class="btn btn-primary">Update</button>

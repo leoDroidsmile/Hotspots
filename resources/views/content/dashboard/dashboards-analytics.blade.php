@@ -16,7 +16,18 @@
 @endsection
 
 @section('content')
-
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item active" aria-current="page" id="pric_li">
+      $HNT - {{$rate}}
+      @if ($currency)
+        USD
+      @else
+        CAD
+      @endif 
+    </li>
+  </ol>
+</nav>
 <div class="row">
   {{-- <div class="col-lg-6 mb-4 order-0">
     <div class="card">
@@ -49,7 +60,37 @@
                     <small style="font-size:75%;">EARNINGS (DAILY)</small>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
-                    <h3 class="mb-0">{{ $total_daily_earning }}</h3>
+                    <h3 class="mb-0">{{ $total_daily_earning }} HNT</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3" style="float:right;">
+                <div class="avatar avatar-md flex-shrink-0 me-3">
+                  <span class="avatar-initial rounded bg-label-info"><i class="bx bx-time bx-sm"></i></span>
+                </div>    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-12 col-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex pb-1">
+              <div class="col-lg-9">
+                <div class="w-100 flex-wrap">
+                  <div class="me-2 mb-2">
+                    <small style="font-size:75%;">
+                    USD/CAD
+                    (DAILY)</small>
+                  </div>
+                  <div class="user-progress d-flex align-items-center gap-1">
+                    <h3 class="mb-0">{{ $price }}
+                    @if ($currency)
+                      USD
+                    @else
+                      CAD
+                    @endif </h3>
                   </div>
                 </div>
               </div>
@@ -73,7 +114,7 @@
                     <small style="font-size:75%;">EARNINGS (MONTHLY)</small>
                   </div>
                   <div class="user-progress d-flex align-items-center gap-1">
-                    <h3 class="mb-0">{{ $total_monthly_earning }}</h3>
+                    <h3 class="mb-0">{{ $total_monthly_earning }} HNT</h3>
                   </div>
                 </div>
               </div>
@@ -234,63 +275,6 @@
 </div>
 
 <script>
-
-var monthlyEarning = <?php echo json_encode($dailyEarningHistory);?>;
-var categories = <?php echo json_encode($categories);?>;
-console.log("monthlyEarning : ", monthlyEarning);
-
-  // $(document).ready(function(){
-  //   var url = 'api/getHotspots/?id=' + {{ Auth::user()->id }}
-
-  //   $.ajax({
-  //       type: "GET",
-  //       url: url,
-  //       headers: {
-  //         'Content-Type': 'application/json'
-  //       },
-  //       success: function (result, status, error) {
-  //         console.log("result : ", result);
-  //         initPage(result);
-  //       },
-  //       error: function (xhr, status, error) {
-  //           alert("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
-  //       }
-  //   });
-  // });
-
-  // function initPage(hotspots){
-  //   $("#total_hotspots").text(hotspots.length);
-
-  //   hotspots.forEach(function(hotspot){
-  //     var url = 'https://api.helium.io/v1/hotspots/' + hotspot.address + '/rewards';
-
-  //     var hostspotsData = [];
-
-  //     // Creating Our XMLHttpRequest object 
-  //     var xhr = new XMLHttpRequest();
-    
-  //     // Making our connection  
-  //     // var url = 'https://api.helium.io/v1/hotspots/' + hotspot_address;
-  //     xhr.open("GET", url, true);
-
-  //     // function execute after request is successful 
-
-  //     fetch(url, { method: 'GET' })
-  //       .then(Result => Result.json())
-  //       .then(response => {
-  //           console.log(response);
-  //       })
-  //       .catch(errorMsg => { console.log(errorMsg); });
-
-  //   });
-
-
-    
-  // }
-
-  // function initHotspots(data){
-
-  // }
 
 </script>
 @endsection

@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        //
-        Schema::table('payments', function (Blueprint $table) {
-            $table->date('during')->change();
-        });
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('currency');
+        });    
     }
 
     /**
@@ -26,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 };

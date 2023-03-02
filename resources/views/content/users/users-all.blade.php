@@ -35,6 +35,7 @@
                         <th>Name</th>
                         <th>Email</th>
                         <th>Created at</th>
+                        <th>Currency</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -44,6 +45,11 @@
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->email_verified_at }}</td>
+                            @if ($user->currency)
+                                <td> USD </td>
+                            @else
+                                <td> CAD </td>
+                            @endif
                             <td>
                                 <div class="dropdown">
                                     <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

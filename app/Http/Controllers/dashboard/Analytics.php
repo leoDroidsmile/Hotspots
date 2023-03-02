@@ -115,7 +115,30 @@ class Analytics extends Controller
 
     $total_monthly_earning = $this->numberFormat($total_monthly_earning);
     $total_daily_earning = $this->numberFormat($total_daily_earning);
-    return view('content.dashboard.dashboards-analytics', compact('hotspots', 'dailyEarningHistory', 'hotspots_online', 'total_monthly_earning', 'total_daily_earning', 'categories'));
+    $currency = Auth::user()->currency;
+
+    // Get Hotspot Status
+    $url ='https://api.helium.io/v1/oracle/prices/current';
+      
+    $client = new GuzzleHttp\Client();
+    $hotspot_status = json_decode($client->request('GET', $url, [
+      'headers' => [
+        'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+      ]
+    ])->getBody()->getContents());
+
+    $rate = $hotspot_status->data->price;
+    $rate = $rate * 0.00000001;
+    $rate = $this->numberFormat($rate);
+    
+    $price = $total_daily_earning * $rate;
+
+    if(!$currency) {
+      ;
+    }
+    $price = $this->numberFormat($price);
+
+    return view('content.dashboard.dashboards-analytics', compact('hotspots', 'dailyEarningHistory', 'hotspots_online', 'total_monthly_earning', 'total_daily_earning', 'categories', 'currency', 'rate', 'price'));
   }
 
   public function refreshAble($updated_at){
