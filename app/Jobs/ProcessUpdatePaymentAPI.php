@@ -43,35 +43,36 @@ class ProcessUpdatePaymentAPI implements ShouldQueue
     public function handle()
     {
         //
-        $url ='https://www.heliumtracker.io/api/hotspots/' . $this->address . '/rewards_total';
+        // $url ='https://www.heliumtracker.io/api/hotspots/' . $this->address . '/rewards_total';
+        $url ='https://etl.api.hotspotrf.com/v1/hotspots/'.$this->address.'/rewards/sum?min_time='.$this->sdate->format('Y-m-d\TH:i:s').'&max_time='.$this->edate->format('Y-m-d\TH:i:s').'&bucket=day';
 
+        // print_r($url);
         $client = new GuzzleHttp\Client();
 
-        $response = $client->request('GET', $url, [
-            'headers' => [
-                // 'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-                "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
-            ],
-            'form_params' => [
-                'start_date' => $this->sdate->format('Y-m-dTH:i:s'),
-                'end_date'=> $this->edate->format('Y-m-dTH:i:s')
-            ]
-        ]);
+        $response = $client->request('GET', $url, []);
 
         $hotspot_status = json_decode($response->getBody()->getContents());
+
+        $total = 0;
+        $rewards_data = $hotspot_status->data;
+
+        foreach ($rewards_data as $key => $reward) {
+            # code...
+            $total += $reward->total;
+        }
         $key = $this->edate->format('Y-m-01');
 
         $payment = Payment::where('user_id', '=', $this->user_id)->where('during', '=', $key)->first();
         
         if($payment) {
-            $payment->amount += $hotspot_status->total->total;
+            $payment->amount += $total;
             $payment->save();
         }
         else {
             $pay = new Payment();
             $pay->user_id = $this->user_id;
             $pay->during = $key;
-            $pay->amount = $hotspot_status->total->total;
+            $pay->amount = $total;
             $pay->status_id = 1;
             $pay->random = $this->generateRandomString(6);
 

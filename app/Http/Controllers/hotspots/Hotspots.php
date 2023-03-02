@@ -66,20 +66,14 @@ class Hotspots extends Controller
 
 
     // Get Hotspot address via API
-    $url ='https://www.heliumtracker.io/api/hotspots/' 
-    . $hotspot->address;
-    
-    $client = new GuzzleHttp\Client();
+    // $client = new GuzzleHttp\Client();
+    // $url ='https://etl.api.hotspotrf.com/v1/hotspots/' . $hotspot->address;
 
-    $hotspot_status = json_decode($client->request('GET', $url, [
-      'headers' => [
-          'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-          "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
-      ]
-    ])->getBody()->getContents());
+    // $response = $client->request('GET', $url);
+    // $hotspot_status = json_decode($response->getBody()->getContents());
 
-    $hotspot->daily_earning = $hotspot_status->rewards_today;
-    $hotspot->monthly_earning = $hotspot_status->rewards_30d;
+    // $hotspot->daily_earning = $hotspot_status->rewards_today;
+    // $hotspot->monthly_earning = $hotspot_status->rewards_30d;
 
     $hotspot->save();
 

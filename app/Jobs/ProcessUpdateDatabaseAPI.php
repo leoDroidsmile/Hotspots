@@ -37,10 +37,9 @@ class ProcessUpdateDatabaseAPI implements ShouldQueue
     public function handle()
     {
         //
+        $client = new GuzzleHttp\Client();
 
         $hotspot = Hotspot::where('id', '=', $this->hotspot_id)->first();
-        
-        $url ='https://www.heliumtracker.io/api/hotspots/' . $hotspot->address;
 
         $up_date = date_create($hotspot->updated_at);
 
@@ -50,21 +49,29 @@ class ProcessUpdateDatabaseAPI implements ShouldQueue
 
         if($diff->d == 0)
             return;
-      
-        $client = new GuzzleHttp\Client();
-        $response = $client->request('GET', $url, [
-            'headers' => [
-                // 'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-                "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
-            ]
-            ]);
+
+        // Get rewards 
+        $url ='https://etl.api.hotspotrf.com/v1/hotspots/'.$hotspot->address.'/rewards/sum?min_time=-30%20day&bucket=day';
+        $response = $client->request('GET', $url);
 
         $hotspot_status = json_decode($response->getBody()->getContents());
 
-        $hotspot->daily_earning = $hotspot_status->rewards_today;
-        $hotspot->monthly_earning = $hotspot_status->rewards_30d;
+        $rewards_data = $hotspot_status->data;
+
+        foreach ($rewards_data as $key => $reward) {
+            # code...
+            $hotspot->monthly_earning += $reward->total;
+        }
+
+        $hotspot->daily_earning = $rewards_data[0]->total;
         
-        if($hotspot_status->online)
+        // Get status
+        $url ='https://etl.api.hotspotrf.com/v1/hotspots/' . $hotspot->address;
+
+        $response = $client->request('GET', $url);
+        $hotspot_status = json_decode($response->getBody()->getContents());
+
+        if($hotspot_status->data->status)
             $hotspot->status = "online";
         else
             $hotspot->status = "offline";
@@ -79,10 +86,10 @@ class ProcessUpdateDatabaseAPI implements ShouldQueue
           $today_earning = new DailyEarning();
           $today_earning->user_id = $hotspot->owner_id;
           $today_earning->date = date("Y-m-d");
-          $today_earning->amount = $hotspot_status->rewards_today;
+          $today_earning->amount = $hotspot->daily_earning;
         }
         else {
-            $today_earning->amount += $hotspot_status->rewards_today;
+            $today_earning->amount += $hotspot->daily_earning;
         }
         $today_earning->save();
     }

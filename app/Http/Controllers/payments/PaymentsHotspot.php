@@ -54,6 +54,8 @@ class PaymentsHotspot extends Controller
             else {
                 $begin = date_create($hotspot->created_at);
             }
+
+            // print_r($begin->format('Y-m-d\TH:i:s'));
             $end = date_create('now');
 
             $start = $begin;

@@ -36,37 +36,7 @@ class Analytics extends Controller
     $total_monthly_earning = 0;
     $total_daily_earning = 0;
 
-    foreach($hotspots as $key => $hotspot){
-
-      // if($this->refreshAble($hotspot->updated_at)){
-
-      //   // Get Hotspot Status
-      //   $url ='https://www.heliumtracker.io/api/hotspots/' 
-      //     . $hotspot["address"];
-          
-      //   $hotspot_status = json_decode($client->request('GET', $url, [
-      //     'headers' => [
-      //         'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-      //          "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
-      //     ]
-      //   ])->getBody()->getContents());
-
-      //   if($hotspot_status->online)
-      //     $hotspot->status = "online";
-      //   else
-      //     $hotspot->status = "offline";
-      
-      //   $monthly_earning = $hotspot_status->rewards_30d;
-      //   $daily_earning = $hotspot_status->rewards_today;
-        
-
-      //   $hotspot->monthly_earning = $monthly_earning;
-      //   $hotspot->daily_earning = $daily_earning;
-      //   $hotspot->updated_at = date('Y-m-d H:i:s');
-      //   $hotspot->save();
-      // }
-
-       
+    foreach($hotspots as $key => $hotspot){       
       if(!Auth::user()->is_admin){
         $total_daily_earning += $hotspot->daily_earning * $hotspot->percentage / 100;
         $total_monthly_earning += $hotspot->monthly_earning * $hotspot->percentage / 100;
@@ -134,6 +104,7 @@ class Analytics extends Controller
     $price = $total_daily_earning * $rate;
 
     if(!$currency) {
+      // Convert USD to CAD
       ;
     }
     $price = $this->numberFormat($price);

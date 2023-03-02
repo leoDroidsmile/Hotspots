@@ -275,6 +275,7 @@
 </div>
 
 <script>
-
+  var monthlyEarning = <?php echo json_encode($dailyEarningHistory);?>;
+  var categories = <?php echo json_encode($categories);?>;
 </script>
 @endsection

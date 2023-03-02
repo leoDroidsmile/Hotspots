@@ -48,23 +48,23 @@ class ProcessExternalAPI implements ShouldQueue
         $hotspot->owner_id    = $user->id;
 
         // Get Hotspot address via API
-        $url ='https://www.heliumtracker.io/api/hotspots/' . $hotspot->address;
+        $url ='https://etl.api.hotspotrf.com/v1/hotspots/' . $hotspot->address;
 
         $client = new GuzzleHttp\Client();
 
         $response = $client->request('GET', $url, [
-            'headers' => [
-                // 'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-                "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
-            ]
+            // 'headers' => [
+            //     // 'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
+            //     // "Api-Key" => "taFGg81X8z2LSUY8T41u2g"
+            // ]
             ]);
 
         $hotspot_status = json_decode($response->getBody()->getContents());
 
-        $hotspot->name        = $hotspot_status->name;
-        $hotspot->city        = $hotspot_status->city->city;
-        $hotspot->state       = 'state';
-        $hotspot->country     = $hotspot_status->city->country;
+        $hotspot->name        = $hotspot_status->data->name;
+        $hotspot->city        = $hotspot_status->data->geocode->long_city;
+        $hotspot->state       = $hotspot_status->data->geocode->long_state;
+        $hotspot->country     = $hotspot_status->data->geocode->long_country;
         $hotspot->status      = "online";
         $hotspot->daily_earning  = 0;
         $hotspot->monthly_earning  = 0;

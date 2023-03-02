@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 var xhr = new XMLHttpRequest();
         
                 // Making our connection  
-                var url = 'https://api.helium.io/v1/hotspots/' + hotspot_address;
+                var url = 'https://etl.api.hotspotrf.com/v1/hotspots/' + hotspot_address;
                 xhr.open("GET", url, true);
         
                 // function execute after request is successful 
