@@ -88,25 +88,23 @@ class Analytics extends Controller
     $currency = Auth::user()->currency;
 
     // Get Hotspot Status
-    $url ='https://api.helium.io/v1/oracle/prices/current';
+    $url ='https://etl.hotspotty.org/api/v1/stats/';
       
     $client = new GuzzleHttp\Client();
-    $hotspot_status = json_decode($client->request('GET', $url, [
-      'headers' => [
-        'User-Agent' => $_SERVER['HTTP_USER_AGENT'],
-      ]
-    ])->getBody()->getContents());
-
-    $rate = $hotspot_status->data->price;
-    $rate = $rate * 0.00000001;
-    $rate = $this->numberFormat($rate);
+    $hotspot_status = json_decode($client->request('GET', $url)->getBody()->getContents());
     
-    $price = $total_daily_earning * $rate;
-
     if(!$currency) {
-      // Convert USD to CAD
-      ;
+      //CAD
+      $rate = $hotspot_status->coingecko_price_cad;
     }
+    else {
+      //USD
+      $rate = $hotspot_status->coingecko_price_usd;
+    }
+
+    $rate = $this->numberFormat($rate);
+
+    $price = $total_daily_earning * $rate;
     $price = $this->numberFormat($price);
 
     return view('content.dashboard.dashboards-analytics', compact('hotspots', 'dailyEarningHistory', 'hotspots_online', 'total_monthly_earning', 'total_daily_earning', 'categories', 'currency', 'rate', 'price'));
