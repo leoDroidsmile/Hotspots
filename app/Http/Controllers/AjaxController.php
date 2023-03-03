@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller {
     public function store(Request $request) {
-        if(!Auth::user()->is_admin){
-            return redirect('/');
-        }
         if(count(DB::table('jobs')->get()->all())){
             return view('content.payments.payments-all', compact('payments'));
         }
@@ -52,7 +49,6 @@ class AjaxController extends Controller {
     }
 
     public function updateDatabase() {
-        print_r(Auth::user());
         // if(!Auth::user()->is_admin){
         //     return redirect('/');
         // }
