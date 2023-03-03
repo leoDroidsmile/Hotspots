@@ -75,6 +75,7 @@ class ProcessExternalAPI implements ShouldQueue
         // $temp['txt'] = 'User("'.$value['email'].'") gets the hotspot(address:"'.$hotspot->address.'")';
         // array_push($ret, $temp);
         
+        print_r($hotspot_status->data->name);
         $hotspot->save();
     }
 }

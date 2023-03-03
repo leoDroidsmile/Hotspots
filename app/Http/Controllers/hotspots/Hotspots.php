@@ -29,18 +29,12 @@ class Hotspots extends Controller
 
   public function create()
   {
-    if(!Auth::user()->is_admin){
-      return redirect('/');
-    }
     $users = User::all()->except(Auth::id());
     return view('content.hotspots.hotspots-create', compact('users'));
   }
 
   public function store(Request $request)
   {
-    if(!Auth::user()->is_admin){
-      return redirect('/');
-    }
     $this->validate($request, array(
       'name'          =>  'required|max:255',
       'city'          =>  'required|max:255',
