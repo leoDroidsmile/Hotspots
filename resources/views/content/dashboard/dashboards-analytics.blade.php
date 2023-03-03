@@ -16,7 +16,7 @@
 @endsection
 
 @section('content')
-<nav aria-label="breadcrumb">
+<!-- <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item active" aria-current="page" id="pric_li">
       $HNT - {{$rate}}
@@ -27,7 +27,7 @@
       @endif 
     </li>
   </ol>
-</nav>
+</nav> -->
 <div class="row">
   {{-- <div class="col-lg-6 mb-4 order-0">
     <div class="card">
@@ -175,7 +175,34 @@
           </div>
         </div>
       </div>
-
+      <div class="col-lg-3 col-md-12 col-6 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex pb-1">
+              <div class="col-lg-9">
+                <div class="w-100 flex-wrap">
+                  <div class="me-2 mb-2">
+                    <small style="font-size:75%;">HNT Price (Today)</small>
+                  </div>
+                  <div class="user-progress d-flex align-items-center gap-1">
+                    <h3 class="mb-0">{{$rate}}
+                    @if ($currency)
+                      USD
+                    @else
+                      CAD
+                    @endif </h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-3" style="float:right;">
+                <div class="avatar avatar-md flex-shrink-0 me-3">
+                  <span class="avatar-initial rounded bg-label-info"><i class="bx bx-time bx-sm"></i></span>
+                </div>    
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -273,6 +300,8 @@
     </div>
   </div>
 </div>
+
+
 
 <script>
   var monthlyEarning = <?php echo json_encode($dailyEarningHistory);?>;
