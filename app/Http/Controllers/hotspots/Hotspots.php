@@ -20,18 +20,27 @@ class Hotspots extends Controller
 
   public function index()
   {
+    if(!Auth::user()->is_admin){
+      return back();
+    }
     $hotspots = Hotspot::with('owner')->get();
     return view('content.hotspots.hotspots-all', compact('hotspots'));
   }
 
   public function create()
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $users = User::all()->except(Auth::id());
     return view('content.hotspots.hotspots-create', compact('users'));
   }
 
   public function store(Request $request)
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $this->validate($request, array(
       'name'          =>  'required|max:255',
       'city'          =>  'required|max:255',
@@ -103,6 +112,9 @@ class Hotspots extends Controller
 
   public function edit(Request $request)
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $users = User::all()->except(Auth::id());
     return view('content.hotspots.hotspots-edit', [
       'hotspot' => Hotspot::where('id', '=', $request->input('id'))->first(),
@@ -112,6 +124,9 @@ class Hotspots extends Controller
 
   public function update(Request $request)
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $this->validate($request, array(
       'name'          =>  'required|max:255',
       'city'          =>  'required|max:255',
@@ -143,6 +158,9 @@ class Hotspots extends Controller
 
   public function delete(Request $request)
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $this->validate($request, array(
       'id'        =>  'required'
     ));

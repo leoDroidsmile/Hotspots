@@ -8,11 +8,19 @@ use App\Jobs\ProcessExternalAPI;
 use App\Http\Controllers\Controller;
 use App\Jobs\ProcessUpdateDatabaseAPI;
 use Auth;
+use Session;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AjaxController extends Controller {
     public function store(Request $request) {
+        if(!Auth::user()->is_admin){
+            return redirect('/');
+        }
+        if(count(DB::table('jobs')->get()->all())){
+            return view('content.payments.payments-all', compact('payments'));
+        }
         $postData = $request->post();
         $postData = $postData['data'];
         
@@ -44,6 +52,15 @@ class AjaxController extends Controller {
     }
 
     public function updateDatabase() {
+        print_r(Auth::user());
+        // if(!Auth::user()->is_admin){
+        //     return redirect('/');
+        // }
+        
+        if(count(DB::table('jobs')->get()->all())){
+            return view('content.payments.payments-all', compact('payments'));
+        }
+        
         $hotspots = Hotspot::all();
 
         foreach ($hotspots as $key => $hotspot) {

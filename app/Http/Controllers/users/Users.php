@@ -14,6 +14,9 @@ class Users extends Controller
 {
   public function index()
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $users = User::all()->except(Auth::id());
     return view('content.users.users-all', compact('users'));
   }
@@ -39,6 +42,9 @@ class Users extends Controller
 
   public function create()
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     return view('content.users.users-create');
   }
 
@@ -69,6 +75,9 @@ class Users extends Controller
 
   public function edit(Request $request)
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     return view('content.users.users-edit', [
       'user' => User::where('id', '=', $request->input('id'))->first()
     ]);
@@ -76,6 +85,9 @@ class Users extends Controller
 
   public function update(Request $request)
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $this->validate($request, array(
       'name' => 'required|max:255',
       'email' => 'required|email|max:255',
@@ -99,6 +111,9 @@ class Users extends Controller
 
   public function delete(Request $request)
   {
+    if(!Auth::user()->is_admin){
+      return redirect('/');
+    }
     $this->validate($request, array(
       'id' => 'required'
     )
