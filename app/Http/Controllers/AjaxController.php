@@ -61,7 +61,8 @@ class AjaxController extends Controller {
 
         foreach ($hotspots as $key => $hotspot) {
             # code...
-
+            $hotspot->monthly_earning = 0;
+            $hotspot->monthly_earning = 0;
             ProcessUpdateDatabaseAPI::dispatch($hotspot->id);
         }
     }
