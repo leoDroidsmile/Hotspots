@@ -49,6 +49,7 @@ class ProcessExternalAPI implements ShouldQueue
 
         // Get Hotspot address via API
         $url ='https://etl.api.hotspotrf.com/v1/hotspots/' . $hotspot->address;
+        print_r($hotspot->address);
 
         $client = new GuzzleHttp\Client();
 
@@ -61,10 +62,25 @@ class ProcessExternalAPI implements ShouldQueue
 
         $hotspot_status = json_decode($response->getBody()->getContents());
 
-        $hotspot->name        = $hotspot_status->data->name;
-        $hotspot->city        = $hotspot_status->data->geocode->long_city;
-        $hotspot->state       = $hotspot_status->data->geocode->long_state;
-        $hotspot->country     = $hotspot_status->data->geocode->long_country;
+        
+        if($hotspot_status->data->name)
+            $hotspot->name        = $hotspot_status->data->name;
+        else
+            $hotspot->name = 'undefined';
+
+        if($hotspot_status->data->geocode->long_city)
+            $hotspot->city        = $hotspot_status->data->geocode->long_city;
+        else
+            $hotspot->city = 'undefined';
+        if($hotspot_status->data->geocode->long_state)
+            $hotspot->state       = $hotspot_status->data->geocode->long_state;
+        else
+            $hotspot->state = 'undefined';
+        if($hotspot_status->data->geocode->long_country)
+            $hotspot->country     = $hotspot_status->data->geocode->long_country;
+        else
+            $hotspot->country = 'undefined';
+
         $hotspot->status      = "online";
         $hotspot->daily_earning  = 0;
         $hotspot->monthly_earning  = 0;
@@ -75,7 +91,6 @@ class ProcessExternalAPI implements ShouldQueue
         // $temp['txt'] = 'User("'.$value['email'].'") gets the hotspot(address:"'.$hotspot->address.'")';
         // array_push($ret, $temp);
         
-        print_r($hotspot_status->data->name);
         $hotspot->save();
     }
 }

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\DB;
 class AjaxController extends Controller {
     public function store(Request $request) {
         if(count(DB::table('jobs')->get()->all())){
-            return view('content.payments.payments-all', compact('payments'));
+            return ;
         }
         $postData = $request->post();
         $postData = $postData['data'];
@@ -52,7 +52,6 @@ class AjaxController extends Controller {
         // if(!Auth::user()->is_admin){
         //     return redirect('/');
         // }
-        
         if(count(DB::table('jobs')->get()->all())){
             return view('content.payments.payments-all', compact('payments'));
         }
@@ -61,7 +60,6 @@ class AjaxController extends Controller {
 
         foreach ($hotspots as $key => $hotspot) {
             # code...
-            $hotspot->monthly_earning = 0;
             $hotspot->monthly_earning = 0;
             ProcessUpdateDatabaseAPI::dispatch($hotspot->id);
         }
