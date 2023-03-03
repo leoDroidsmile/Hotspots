@@ -57,11 +57,14 @@ class ProcessUpdateDatabaseAPI implements ShouldQueue
         $hotspot_status = json_decode($response->getBody()->getContents());
 
         $rewards_data = $hotspot_status->data;
+        $total = 0;
 
         foreach ($rewards_data as $key => $reward) {
             # code...
-            $hotspot->monthly_earning += $reward->total;
+            $total += $reward->total;
         }
+
+        $hotspot->monthly_earning = $total;
 
         $hotspot->daily_earning = $rewards_data[0]->total;
         
