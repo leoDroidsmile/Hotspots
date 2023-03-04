@@ -62,10 +62,27 @@ class Hotspots extends Controller
     }
 
     $hotspot = new Hotspot;
-    $hotspot->name        = $postData["name"];
-    $hotspot->city        = $postData["city"];
-    $hotspot->state       = $postData["state"];
-    $hotspot->country     = $postData["country"];
+
+    if($postData['name'])
+      $hotspot->name        = $postData["name"];
+    else
+      $hotspot->name        = 'undefined';
+
+    if($postData['city'])
+      $hotspot->city        = $postData["city"];
+    else
+      $hotspot->city        = 'undefined';
+
+    if($postData['state'])
+      $hotspot->state        = $postData["state"];
+    else
+      $hotspot->state        = 'undefined';
+
+    if($postData['country'])
+      $hotspot->country        = $postData["country"];
+    else
+      $hotspot->country        = 'undefined';
+      
     $hotspot->address     = $postData["address"];
     $hotspot->owner_id    = $postData["owner_id"];
     $hotspot->percentage  = $postData["percentage"];
