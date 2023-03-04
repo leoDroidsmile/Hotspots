@@ -53,7 +53,8 @@ class Hotspots extends Controller
 
     $postData = $request->post();
 
-    $is_origin = Hotspot::where('address', '=', $postData['address']);
+    $is_origin = Hotspot::where('address', '=', $postData['address'])->first();
+
     if($is_origin) {
       Session::flash('error', 'Hotspot with same address already exists!');
 
