@@ -73,6 +73,45 @@
                                     placeholder="Country" readonly required value="{{ $hotspot->country }}"/>
                             </div>
                         </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="hotspot-country">Beacon</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="Beacon" name="Beacon"
+                                    placeholder="Beacon" readonly required value="{{ $hotspot->Beacon }}"/>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="hotspot-country">Beacon Invalid</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="Beacon_Invalid" name="Beacon_Invalid"
+                                    placeholder="Beacon Invalid" readonly required value="{{ $hotspot->Beacon_Invalid}}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="hotspot-country">Witness</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="Witness" name="Witness"
+                                    placeholder="Witness" readonly required value="{{ $hotspot->Witness }}"/>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="hotspot-country">Witness Invalid</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="Witness_Invalid" name="Witness_Invalid"
+                                    placeholder="Witness Invalid" readonly required value="{{ $hotspot->Witness_Invalid }}"/>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label class="col-sm-2 col-form-label" for="hotspot-country">Bidirectional Witness</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="Bdirect_Witness" name="Bdirect_Witness"
+                                    placeholder="Bidirectional Witness" readonly required value="{{ $hotspot->Bdirect}}"/>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="hotspot-country">Bidirectional Witness Invalid</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="Bdirect_Witness_Invalid" name="Bdirect_Witness_Invalid"
+                                    placeholder="Bidirectional Witness Invalid" readonly required value="{{ $hotspot->Bdirect_Invalid}}"/>
+                            </div>
+                        </div>
                         <div class="row mb-3">
                             <label class="col-sm-2 col-form-label" for="hotspot-owner">Owner</label>
                             <div class="btn-group col-sm-10">

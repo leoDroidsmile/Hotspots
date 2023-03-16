@@ -49,7 +49,6 @@ class ProcessExternalAPI implements ShouldQueue
 
         // Get Hotspot address via API
         $url ='https://etl.api.hotspotrf.com/v1/hotspots/' . $hotspot->address;
-        print_r($hotspot->address);
 
         $client = new GuzzleHttp\Client();
 
@@ -87,6 +86,25 @@ class ProcessExternalAPI implements ShouldQueue
         $hotspot->created_at  = date('Y-m-d\TH:i:s.000') . 'Z';
         $hotspot->updated_at  = date('Y-m-d\TH:i:s.000') . 'Z';
 
+        $url ='https://etl.hotspotty.org/api/v1/hotspots/witnesses-lean';
+        $data['hotspotIds'] = array($hotspot->address);
+        $response = $client->request('POST', $url, [
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ],
+            'body' => json_encode($data)
+        ]);
+
+        $hotspot_beacon = json_decode($response->getBody()->getContents());
+        $hotspot_beacon = $hotspot_beacon->data[0];
+
+        $hotspot->Beacon = $hotspot_beacon->wB->a;
+        $hotspot->Beacon_Invalid = $hotspot_beacon->wB->i;
+        $hotspot->Witness = $hotspot_beacon->wO->a;
+        $hotspot->Witness_Invalid = $hotspot_beacon->wO->i;
+        $hotspot->Bdirect = $hotspot_beacon->b->a;
+        $hotspot->Bdirect_Invalid = $hotspot_beacon->b->i;
         // $temp['stat'] = 'success';
         // $temp['txt'] = 'User("'.$value['email'].'") gets the hotspot(address:"'.$hotspot->address.'")';
         // array_push($ret, $temp);

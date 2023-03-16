@@ -82,10 +82,41 @@ class Hotspots extends Controller
       $hotspot->country        = $postData["country"];
     else
       $hotspot->country        = 'undefined';
-      
+
+    if($postData['Witness'])
+      $hotspot->Witness        = $postData["Witness"];
+    else
+      $hotspot->Witness        = 0;
+
+    if($postData['Witness_Invalid'])
+      $hotspot->Witness_Invalid        = $postData["Witness_Invalid"];
+    else
+      $hotspot->Witness_Invalid        = 0;
+
+    if($postData['Beacon'])
+      $hotspot->Beacon        = $postData["Beacon"];
+    else
+      $hotspot->Beacon        = 0;
+
+    if($postData['Beacon_Invalid'])
+      $hotspot->Beacon_Invalid        = $postData["Beacon_Invalid"];
+    else
+      $hotspot->Beacon_Invalid        = 0;
+
+    if($postData['Bdirect_Witness'])
+      $hotspot->Bdirect        = $postData["Bdirect_Witness"];
+    else
+      $hotspot->Bdirect        = 0;
+
+    if($postData['Bdirect_Witness_Invalid'])
+      $hotspot->Bdirect_Invalid        = $postData["Bdirect_Witness_Invalid"];
+    else
+      $hotspot->Bdirect_Invalid        = 0;
+
     $hotspot->address     = $postData["address"];
     $hotspot->owner_id    = $postData["owner_id"];
     $hotspot->percentage  = $postData["percentage"];
+
     $hotspot->status      = "online";
     $hotspot->daily_earning  = 0;
     $hotspot->monthly_earning  = 0;
@@ -159,10 +190,57 @@ class Hotspots extends Controller
 
     $hotspot = hotspot::find($request->id);
 
-    $hotspot->name        = $postData["name"];
-    $hotspot->city        = $postData["city"];
-    $hotspot->state       = $postData["state"];
-    $hotspot->country     = $postData["country"];
+
+    if($postData['name'])
+      $hotspot->name        = $postData["name"];
+    else
+      $hotspot->name        = 'undefined';
+
+    if($postData['city'])
+      $hotspot->city        = $postData["city"];
+    else
+      $hotspot->city        = 'undefined';
+
+    if($postData['state'])
+      $hotspot->state        = $postData["state"];
+    else
+      $hotspot->state        = 'undefined';
+
+    if($postData['country'])
+      $hotspot->country        = $postData["country"];
+    else
+      $hotspot->country        = 'undefined';
+
+    if($postData['Witness'])
+      $hotspot->Witness        = $postData["Witness"];
+    else
+      $hotspot->Witness        = 0;
+
+    if($postData['Witness_Invalid'])
+      $hotspot->Witness_Invalid        = $postData["Witness_Invalid"];
+    else
+      $hotspot->Witness_Invalid        = 0;
+
+    if($postData['Beacon'])
+      $hotspot->Beacon        = $postData["Beacon"];
+    else
+      $hotspot->Beacon        = 0;
+
+    if($postData['Beacon_Invalid'])
+      $hotspot->Beacon_Invalid        = $postData["Beacon_Invalid"];
+    else
+      $hotspot->Beacon_Invalid        = 0;
+
+    if($postData['Bdirect_Witness'])
+      $hotspot->Bdirect        = $postData["Bdirect_Witness"];
+    else
+      $hotspot->Bdirect        = 0;
+
+    if($postData['Bdirect_Witness_Invalid'])
+      $hotspot->Bdirect_Invalid        = $postData["Bdirect_Witness_Invalid"];
+    else
+      $hotspot->Bdirect_Invalid        = 0;
+      
     $hotspot->address     = $postData["address"];
     $hotspot->owner_id    = $postData["owner_id"];
     $hotspot->percentage  = $postData["percentage"];

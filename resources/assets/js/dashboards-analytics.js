@@ -684,5 +684,6 @@
 
   $(document).ready(function () {
     $('#hotspot_status_table').DataTable();
+    $('#hotspot_beacon_table').DataTable();
   });
 })();

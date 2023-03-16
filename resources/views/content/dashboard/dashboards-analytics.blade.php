@@ -295,13 +295,53 @@
                     @endforeach
                 </tbody>
             </table>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-
+<div class="row">
+  <!-- Total Beacons -->
+  <div class="col-12 order-2 order-md-3 order-lg-2 mb-4">
+    <div class="card">
+      <div class="row row-bordered g-0">
+        <h5 class="card-header m-0 me-2 pb-3">Hotspots Witnesses</h5>
+        <div class="card-body">
+          <div class="table-responsive text-nowrap">
+            <table class="table" id="hotspot_beacon_table">
+                <thead>
+                    <tr>
+                        <th data-sortable="true">Name</th>
+                        <th data-sortable="true">Beacon</th>
+                        <th data-sortable="true">Beacon Invalid</th>
+                        <th data-sortable="true">Witness</th>
+                        <th data-sortable="true">Witness Invalid</th>
+                        <th data-sortable="true">Bidirectional Witness</th>
+                        <th data-sortable="true">Bidirectional Witness Invalid</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach ($hotspots as $hotspot)
+                        <tr>
+                            <td>{{ $hotspot->name }}</td>
+                            <td>{{ $hotspot->Beacon }}</td>
+                            <td>{{ $hotspot->Beacon_Invalid }}</td>
+                            <td>{{ $hotspot->Witness }}</td>
+                            <td>{{ $hotspot->Witness_Invalid }}</td>
+                            <td>{{ $hotspot->Bdirect }}</td>
+                            <td>{{ $hotspot->Bdirect_Invalid }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
   var monthlyEarning = <?php echo json_encode($dailyEarningHistory);?>;
