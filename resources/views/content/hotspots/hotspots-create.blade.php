@@ -225,7 +225,10 @@
                     'data' : sendData
                 },
                 success:function(resp) {
-                    console.log(resp);
+                    $('#log_view').text('');
+                    for(var i = 0 ; i < resp.length ; i ++) {
+                        $('#log_view').append(resp[i] + '\n');
+                    }
                 }
             });
         }
